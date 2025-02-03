@@ -2,6 +2,8 @@
 
 Unofficial addon to save a locally stored wishlist of Fab assets (name, URL, current price).
 
+![Unofficial Fab Wishlist Screenshot](screenshots/unofficial-fab-wishlist-screenshot.png)
+
 ## 🔧 How to Install
 
 1. **Download the extension**  
