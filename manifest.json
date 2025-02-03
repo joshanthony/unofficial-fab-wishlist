@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Unofficial Fab Wishlist",
-  "version": "1.6",
+  "version": "1.0",
   "description": "Unofficial addon to save a locally stored wishlist of Fab assets (name, URL, current price)",
   "permissions": [
     "activeTab",
