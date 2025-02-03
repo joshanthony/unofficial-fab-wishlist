@@ -3,7 +3,7 @@
 Unofficial browser extension to save assets from Fab in a wishlist (name, URL, current price).
 
 Features include:
-- Local storage only, no data sent to external servers
+- Local storage only, no data sent to external parties
 - Sort and filter by name and price
 - Filter by name (just start typing)
 - Export wishlist as CSV
