@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Unofficial Fab Wishlist</title>
+  <style>
+    :root {
+      --bg-color: #2c2c2c;
+      --text-color: #f0f0f0;
+      --accent-color: #4faaff;
+      --link-color: #4faaff;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      width: 320px;
+      height: 480px;
+      display: flex;
+      flex-direction: column;
+    }
+    .content {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .tab-header {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+    .tab-header button {
+      flex: 1;
+      padding: 10px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      border: none;
+      border-top: 2px solid transparent;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .tab-header button.active {
+      border-top-color: var(--accent-color);
+      font-weight: bold;
+    }
+    #addBtn {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: var(--accent-color);
+      border: none;
+      color: var(--bg-color);
+      cursor: pointer;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    #addBtn:disabled {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+    #sortSelect {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    #filterInput {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    .wishlist-item {
+      border-bottom: 1px solid #555;
+      padding: 5px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.3s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .wishlist-item.removing {
+      animation: fadeOut 0.3s forwards;
+    }
+    @keyframes fadeOut {
+      to { opacity: 0; transform: translateY(-10px); }
+    }
+    .wishlist-item a {
+      color: var(--accent-color);
+      text-decoration: none;
+      flex-grow: 1;
+    }
+    .wishlist-item img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      margin-right: 8px;
+      border-radius: 4px;
+    }
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #ff5555;
+      font-size: 16px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    #wishlistContainer p {
+      text-align: center;
+    }
+    #fabWarning {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 10px;
+      color: #ccc;
+    }
+    .settings-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 2px;
+      margin-bottom: 14px;
+      text-align: center;
+      border-bottom: 1px solid #555;
+      padding-bottom: 10px;
+    }
+    .settings-section {
+      padding-bottom: 4px;
+    }
+    .settings-section h2 {
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: var(--accent-color);
+    }
+    .settings-section button {
+      padding: 6px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 4px;
+      background-color: var(--accent-color);
+      color: var(--bg-color);
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .settings-section button:hover {
+      background-color: #3f8dd9;
+      transform: scale(1.02);
+    }
+    .settings-section input[type="file"] {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    .settings-section label {
+      display: block;
+      margin-top: 10px;
+    }
+    .settings-section a {
+      color: var(--link-color);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="content" id="tabContent">
+    <!-- Wishlist Tab -->
+    <div id="wishlistTab" class="tab-content active">
+      <button id="addBtn" aria-label="Add current Fab asset to wishlist">+ Add to Wishlist</button>
+      <select id="sortSelect" aria-label="Sort wishlist">
+        <option value="name">Sort by: Name (A–Z)</option>
+        <option value="priceLow">Price: Low to High</option>
+        <option value="priceHigh">Price: High to Low</option>
+      </select>
+      <input id="filterInput" type="text" placeholder="Filter by name..." aria-label="Filter wishlist items" />
+      <div id="wishlistContainer" aria-live="polite" aria-label="Wishlist items">
+        <!-- Items loaded here -->
+      </div>
+      <div id="fabWarning" role="alert"></div>
+    </div>
+    <!-- Settings Tab -->
+    <div id="settingsTab" class="tab-content">
+      <div class="settings-title">Settings</div>
+      <div class="settings-section">
+        <h2>Manage Data</h2>
+        <button id="exportBtn">Export Wishlist (CSV)</button>
+        <label for="importFile">Import Wishlist (CSV):</label>
+        <input type="file" id="importFile" accept="text/csv">
+      </div>
+      <div class="settings-section">
+        <h2>Disclaimer</h2>
+        <p>
+          This project is an unofficial addon created by indie game developer <a href="https://joshthedev.com" target="_blank">JoshTheDev</a>. It is not affiliated with Epic Games, Fab or any of their related entities.
+        </p>
+        <h2>Privacy</h2>
+        <p>
+          This extension does not collect personal data and all data is stored locally on your device. Clearing your browser's local storage will clear your wishlist. View the <a href="https://joshthedev.com/unofficial-fab-wishlist/privacy.html" target="_blank">Privacy Policy</a> and the open source code at <a href="https://github.com/joshanthony/unofficial-fab-wishlist" target="_blank">Github</a>.
+        </p>
+      </div>
+      <div class="settings-section">
+        <button id="clearBtn">Clear All Wishlist Items</button>
+      </div>
+    </div>
+  </div>
+  <div class="tab-header">
+    <button id="tabWishlist" class="active" role="tab" aria-selected="true">Wishlist</button>
+    <button id="tabSettings" role="tab" aria-selected="false">Settings</button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

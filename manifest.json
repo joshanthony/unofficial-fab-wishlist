@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Unofficial Fab Wishlist",
+  "version": "1.6",
+  "description": "Unofficial addon to save a locally stored wishlist of Fab assets (name, URL, current price)",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "homepage_url": "https://joshthedev.com/unofficial-fab-wishlist/privacy.html",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Unofficial Fab Wishlist"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
